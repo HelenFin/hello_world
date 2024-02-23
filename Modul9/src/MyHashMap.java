@@ -112,8 +112,8 @@ public class MyHashMap<K, V> {
 
     public static void main(String[] args) {
         MyHashMap<String, Integer> myMap = new MyHashMap<>();
-        myMap.put("apple", 10);
+        myMap.put("apple", 20);
         Integer retrievedValue = myMap.get("apple");
-        System.out.println("Value for apple: " + retrievedValue);
+        System.out.println("Value for apple: " + retrievedValue + " " + myMap.hash("apple"));
     }
 }
