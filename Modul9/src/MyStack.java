@@ -1,27 +1,67 @@
-import java.util.Stack;
-
 public class MyStack {
+    private Node top;
+    private int size;
 
-    public static void main(String[] args){
-        Stack<Integer> myStack = new Stack<>();
+    private class Node {
+        Object data;
+        Node next;
 
-        myStack.add(1);
-        myStack.add(2);
-        myStack.add(3);
-        myStack.push(6);
-        myStack.add(4);
-        myStack.add(5);
-
-
-        System.out.println(myStack);
-
-        System.out.println("Removing the element by index " + myStack.remove(1));
-        System.out.println("Return the first element of stack " + myStack.peek());
-        System.out.println("Return the first element of stack and remove it " + myStack.pop());
-        System.out.println("The size of the stack is " + myStack.size());
-
-        for(int stack : myStack){
-            System.out.println(stack);
+        public Node(Object data) {
+            this.data = data;
+            this.next = null;
         }
+    }
+
+    public MyStack() {
+        top = null;
+        size = 0;
+    }
+
+    public void push(Object value) {
+        Node newNode = new Node(value);
+        newNode.next = top;
+        top = newNode;
+        size++;
+    }
+
+    public void remove(int index) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+
+        if (index == 0) {
+            pop();
+            return;
+        }
+
+        Node current = top;
+        for (int i = 0; i < index - 1; i++) {
+            current = current.next;
+        }
+
+        current.next = current.next.next;
+        size--;
+    }
+
+    public void clear() {
+        top = null;
+        size = 0;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public Object peek() {
+        if (top == null) return null;
+        return top.data;
+    }
+
+    public Object pop() {
+        if (top == null) return null;
+        Object data = top.data;
+        top = top.next;
+        size--;
+        return data;
     }
 }

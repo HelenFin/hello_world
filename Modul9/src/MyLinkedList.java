@@ -1,58 +1,92 @@
-public class MyLinkedList{
-    static class Node {
+public class MyLinkedList {
+    private Node head;
+    private Node tail;
+    private int size;
 
-        int data;
-        Node previous;
+    private class Node {
+        Object data;
         Node next;
+        Node prev;
 
-        public Node(int data) {
+        Node(Node prev, Object data, Node next) {
             this.data = data;
+            this.next = next;
+            this.prev = prev;
         }
     }
 
-        Node head = null;
-        Node tail = null;
-
-        public void insert(int data){
-            Node newNode = new Node(data);
-
-            if(head == null){
-                head = newNode;
-                tail = newNode;
-                head.previous = null;
-                tail.next = null;
-            }
-            else{
-                tail.next = newNode;
-                newNode.previous = tail;
-                tail = newNode;
-                tail.next = null;
-            }
-        }
-
-        public void displayList(){
-            Node current = head;
-            if(head == null){
-                System.out.println("The given list is empty");
-            }
-            else{
-                System.out.println("The data in the doubly linked list: ");
-                while (current != null){
-                    System.out.print(current.data + " ");
-                    current = current.next;
-                }
-            }
-        }
-
-
-    public static void main(String[] args){
-        MyLinkedList newList = new MyLinkedList();
-        newList.insert(10);
-        newList.insert(50);
-        newList.insert(70);
-        newList.insert(80);
-        newList.insert(60);
-        newList.displayList();
+    public MyLinkedList() {
+        size = 0;
     }
 
+    public void add(Object value) {
+        Node l = tail;
+        Node newNode = new Node(l, value, null);
+        tail = newNode;
+        if (l == null)
+            head = newNode;
+        else
+            l.next = newNode;
+        size++;
+    }
+
+    public void remove(int index) {
+        Node x = getNode(index);
+        Node next = x.next;
+        Node prev = x.prev;
+
+        if (prev == null) {
+            head = next;
+        } else {
+            prev.next = next;
+            x.prev = null;
+        }
+
+        if (next == null) {
+            tail = prev;
+        } else {
+            next.prev = prev;
+            x.next = null;
+        }
+
+        x.data = null;
+        size--;
+    }
+
+    private Node getNode(int index) {
+        if (index < 0 || index >= size)
+            throw new IndexOutOfBoundsException("Index: "+index+", Size: "+size);
+
+        Node x;
+        if (index < (size >> 1)) {
+            x = head;
+            for (int i = 0; i < index; i++)
+                x = x.next;
+        } else {
+            x = tail;
+            for (int i = size - 1; i > index; i--)
+                x = x.prev;
+        }
+        return x;
+    }
+
+    public void clear() {
+        for (Node x = head; x != null; ) {
+            Node next = x.next;
+            x.data = null;
+            x.next = null;
+            x.prev = null;
+            x = next;
+        }
+        head = tail = null;
+        size = 0;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public Object get(int index) {
+        return getNode(index).data;
+    }
 }

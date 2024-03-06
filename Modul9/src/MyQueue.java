@@ -1,44 +1,59 @@
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
-
 public class MyQueue {
+    private Node head;
+    private Node tail;
+    private int size;
 
-    public static void main(String[] args){
-        Queue<Integer> myQueue = new LinkedList<>();
-        myQueue.add(2);
-        myQueue.add(5);
-        myQueue.add(7);
-        myQueue.add(8);
-        myQueue.add(9);
-        System.out.println(myQueue);
+    private class Node {
+        Object data;
+        Node next;
 
-        Queue<String> myStringQueue = new LinkedList<>();
-        myStringQueue.offer("Hello");
-        myStringQueue.offer("my");
-        myStringQueue.offer("World");
-        System.out.println(myStringQueue);
-
-        int positionOne = myQueue.poll();
-        System.out.println("Removed element with poll() in Queue is the first element " + positionOne);
-
-        int positionTwo = myQueue.remove();
-        System.out.println("Removed element in Queue is the first element " + positionTwo);
-
-        String firstElement = myStringQueue.element();
-        System.out.println("The first element with element() is " + firstElement);
-
-        String anotherFirstElement = myStringQueue.peek();
-        System.out.println("The first element with peek() is " + anotherFirstElement);
-
-        Iterator<Integer> iterator = myQueue.iterator();
-        while (iterator.hasNext()){
-            Integer iteratedQueue = iterator.next();
-            System.out.println(iteratedQueue);
+        public Node(Object data) {
+            this.data = data;
+            this.next = null;
         }
-
     }
 
+    public MyQueue() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
 
+    public void add(Object value) {
+        Node newNode = new Node(value);
+        if (tail == null) {
+            head = tail = newNode;
+        } else {
+            tail.next = newNode;
+            tail = newNode;
+        }
+        size++;
+    }
+
+    public void clear() {
+        head = null;
+        tail = null;
+        size = 0;
+    }
+
+    public int size() {
+        return size;
+    }
+
+    public Object peek() {
+        if (head == null) return null;
+        return head.data;
+    }
+
+    public Object poll() {
+        if (head == null) return null;
+        Object data = head.data;
+        head = head.next;
+        if (head == null) {
+            tail = null;
+        }
+        size--;
+        return data;
+    }
 }
+
