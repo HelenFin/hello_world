@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MyInOutStream {
 
@@ -23,8 +25,22 @@ public class MyInOutStream {
             try (BufferedReader bufferedReader = new BufferedReader(new FileReader("file.txt"))) {
                 String line;
                 while ((line = bufferedReader.readLine()) != null ) {
-                    if(line.contains("-")){
-                        System.out.println(line);
+                    Pattern pattern = Pattern.compile("\\d\\d\\d-\\d\\d\\d-\\d\\d\\d\\d", Pattern.CASE_INSENSITIVE);
+                    Pattern patternTwo = Pattern.compile("\\(\\d\\d\\d\\)\\s\\d\\d\\d-\\d\\d\\d\\d", Pattern.CASE_INSENSITIVE);
+                    // Match regex against input
+                    Matcher matcher = pattern.matcher(line);
+                    Matcher matcherTwo = patternTwo.matcher(line);
+
+                    boolean result = matcher.find();
+                    boolean resultTwo = matcherTwo.find();
+
+                    if (matcher.matches()) {
+                        System.out.println(matcher.group());
+
+
+                    }
+                    else if(matcherTwo.matches()){
+                        System.out.println(matcherTwo.group());
                     }
                 }
             } catch (IOException e) {
